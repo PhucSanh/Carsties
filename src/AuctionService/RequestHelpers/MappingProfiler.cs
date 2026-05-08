@@ -22,6 +22,10 @@ public class MappingProfiler : Profile
             Mileage = src.Mileage
         }));
 
+        CreateMap<AuctionUpdateDTO, Item>()
+             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+        CreateMap<AuctionUpdateDTO, Auction>()
+                 .ForMember(dest => dest.Item, opt => opt.MapFrom(src => src));
 
     }
 

@@ -1,5 +1,6 @@
 using AuctionService.Data;
 using AuctionService.Data.SeedData.Auction;
+using AuctionService.Exceptions;
 using AuctionService.Repositories;
 using AuctionService.Repositories.Generic;
 using AuctionService.RequestHelpers;
@@ -10,7 +11,8 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<AuctionDBContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -24,6 +26,7 @@ builder.Services.AddScoped<IAuctionRepository, AuctionRepository>();
 //Services
 builder.Services.AddScoped<IAuctionService, AuctionServiceimpl>();
 var app = builder.Build();
+app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
 
@@ -38,5 +41,6 @@ catch (Exception ex)
 {
     Console.WriteLine($"An error occurred during DB initialization: {ex.Message}");
 }
+
 
 app.Run();
