@@ -7,7 +7,7 @@ public interface IExcelService
 {
     byte[] ExportToExcel<T>(IEnumerable<T> data, string sheetName);
 
-    ImportError<T> ImportFromExcel<T>(FileStream fileStream, Func<T, string?>? validateRule = null) where T : new();
+    ImportError<T> ImportFromExcel<T>(Stream fileStream, Func<T, string?>? validateRule = null) where T : new();
     byte[] GenerateTemplate<T>();
 
 }

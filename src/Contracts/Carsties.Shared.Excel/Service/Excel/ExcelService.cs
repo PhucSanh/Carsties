@@ -80,7 +80,7 @@ public class ExcelService : IExcelService
     }
 
 
-    public ImportError<T> ImportFromExcel<T>(FileStream fileStream, Func<T, string?>? validateRule = null) where T : new()
+    public ImportError<T> ImportFromExcel<T>(Stream fileStream, Func<T, string?>? validateRule = null) where T : new()
     {
         var result = new ImportError<T>();
         using var package = new ExcelPackage(fileStream);

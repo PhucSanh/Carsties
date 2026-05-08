@@ -79,7 +79,12 @@ public class AuctionServiceimpl : IAuctionService
 
     public async Task<bool> ImportAuctionsFromExcelAsync(Stream stream)
     {
-        var importResult = _excelService.ImportFromExcel<AuctionImportDTO>(new FileStream("temp.xlsx", FileMode.Create, FileAccess.Write), null);
+        var importResult = _excelService.ImportFromExcel<AuctionImportDTO>(stream, dto =>
+        {
+            if (dto.ReservePrice < 1000) return "Reserve price must be at least 1000";
+            if (string.IsNullOrEmpty(dto.Make)) return "Make is required";
+            return null;
+        });
         if (importResult.Errors.Any())
         {
             var errorMessage = string.Join("; ", importResult.Errors);
