@@ -25,4 +25,8 @@
 
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Contracts\Carsties.Shared.Excel\Carsties.Shared.Excel.csproj" />
+  </ItemGroup>
+
 </Project>

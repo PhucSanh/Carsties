@@ -2,18 +2,22 @@ using System;
 using AuctionService.DTO;
 using AuctionService.DTOs.Auction;
 using AuctionService.Repositories;
+
 using AutoMapper;
+using Carsties.Shared.Excel.Service.Excel;
 
 namespace AuctionService.Services.Auction;
 
 public class AuctionServiceimpl : IAuctionService
 {
     private readonly IAuctionRepository _auctionRepository;
+    private readonly IExcelService _excelService;
     private readonly IMapper _mapper;
-    public AuctionServiceimpl(IAuctionRepository auctionRepository, IMapper mapper)
+    public AuctionServiceimpl(IAuctionRepository auctionRepository, IMapper mapper, IExcelService excelService)
     {
         _auctionRepository = auctionRepository;
         _mapper = mapper;
+        _excelService = excelService;
     }
 
     public async Task<AuctionDTO> CreateAuctionAsync(AuctionCreateDTO auctionDto)
@@ -45,6 +49,18 @@ public class AuctionServiceimpl : IAuctionService
         }
     }
 
+    public async Task<byte[]> ExportAuctionsToExcelAsync()
+    {
+        var auctions = await _auctionRepository.GetAuctionsWithItemsAsync();
+        var exportDtos = _mapper.Map<IEnumerable<AuctionExportDTO>>(auctions);
+        return _excelService.ExportToExcel(exportDtos, "Auctions");
+    }
+
+    public byte[] GenerateTemplateAsync()
+    {
+        return _excelService.GenerateTemplate<AuctionImportDTO>();
+    }
+
     public async Task<AuctionDTO> GetAuctionAsync(Guid id)
     {
         var auction = await _auctionRepository.GetAuctionWithItemsAsync(id);
@@ -59,6 +75,27 @@ public class AuctionServiceimpl : IAuctionService
     {
         var auctions = await _auctionRepository.GetAuctionsWithItemsAsync();
         return _mapper.Map<IEnumerable<AuctionDTO>>(auctions);
+    }
+
+    public async Task<bool> ImportAuctionsFromExcelAsync(Stream stream)
+    {
+        var importResult = _excelService.ImportFromExcel<AuctionImportDTO>(new FileStream("temp.xlsx", FileMode.Create, FileAccess.Write), null);
+        if (importResult.Errors.Any())
+        {
+            var errorMessage = string.Join("; ", importResult.Errors);
+            throw new BadRequestException($"Failed to import auctions from Excel. Errors: {errorMessage}");
+        }
+
+        var importDtos = importResult.Data;
+        var auctions = _mapper.Map<IEnumerable<Entities.Auction>>(importDtos);
+        foreach (var auction in auctions)
+        {
+            auction.Id = Guid.NewGuid();
+            auction.Seller = "John Doe";
+        }
+        await _auctionRepository.AddRangeAsync(auctions);
+        var result = await _auctionRepository.SaveChangesAsync();
+        return result;
     }
 
     public async Task UpdateAuctionAsync(Guid id, AuctionUpdateDTO auctionDto)

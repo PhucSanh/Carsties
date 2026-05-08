@@ -44,5 +44,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         return await _auctionDBContext.SaveChangesAsync() > 0;
     }
+
+    public async Task AddRangeAsync(IEnumerable<T> entities)
+    {
+        await _auctionDBContext.Set<T>().AddRangeAsync(entities);
+    }
 }
 

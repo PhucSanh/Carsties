@@ -3,8 +3,8 @@ using AuctionService.Data.SeedData.Auction;
 using AuctionService.Exceptions;
 using AuctionService.Repositories;
 using AuctionService.Repositories.Generic;
-using AuctionService.RequestHelpers;
 using AuctionService.Services.Auction;
+using Carsties.Shared.Excel.Service.Excel;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -25,6 +25,7 @@ builder.Services.AddScoped<IAuctionRepository, AuctionRepository>();
 
 //Services
 builder.Services.AddScoped<IAuctionService, AuctionServiceimpl>();
+builder.Services.AddScoped<IExcelService, ExcelService>();
 var app = builder.Build();
 app.UseExceptionHandler();
 

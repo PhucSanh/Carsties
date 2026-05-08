@@ -11,4 +11,8 @@ public interface IAuctionService
     Task<AuctionDTO> GetAuctionAsync(Guid id);
     Task<IEnumerable<AuctionDTO>> GetAuctionsAsync();
     Task UpdateAuctionAsync(Guid id, AuctionUpdateDTO auctionDto);
+
+    Task<byte[]> ExportAuctionsToExcelAsync();
+    byte[] GenerateTemplateAsync();
+    Task<bool> ImportAuctionsFromExcelAsync(Stream stream);
 }
