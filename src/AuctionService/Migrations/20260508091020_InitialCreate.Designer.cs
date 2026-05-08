@@ -9,11 +9,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace AuctionService.Data.Migrations
+namespace AuctionService.Migrations
 {
     [DbContext(typeof(AuctionDBContext))]
-    [Migration("20260508040522_InitialCreate1")]
-    partial class InitialCreate1
+    [Migration("20260508091020_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,7 +31,7 @@ namespace AuctionService.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("AuctionEndTime")
+                    b.Property<DateTime>("AuctionEnd")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("CreatedAt")
@@ -82,8 +82,8 @@ namespace AuctionService.Data.Migrations
                     b.Property<string>("Make")
                         .HasColumnType("text");
 
-                    b.Property<string>("Mileage")
-                        .HasColumnType("text");
+                    b.Property<int>("Mileage")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Model")
                         .HasColumnType("text");
