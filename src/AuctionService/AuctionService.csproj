@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Contracts\Carsties.Shared.Excel\Carsties.Shared.Excel.csproj" />
     <ProjectReference Include="..\Contracts\Carsties.Shared.Data\Carsties.Shared.Data.csproj" />
+    <ProjectReference Include="..\Contracts\Carsties.Shared.Exception\Carsties.Shared.ExceptionHandler.csproj" />
   </ItemGroup>
 
 </Project>

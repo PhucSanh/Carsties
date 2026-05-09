@@ -1,6 +1,6 @@
 using System;
 
-namespace AuctionService;
+namespace Carsties.Shared.ExceptionHandler.Exceptions;
 
 public class BadRequestException : Exception
 {

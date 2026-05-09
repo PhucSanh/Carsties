@@ -3,8 +3,9 @@ using System;
 
 using AutoMapper;
 using Carsties.Shared.Data.DTOs.Auction;
+using Carsties.Shared.Data.DTOs.Request;
 using Carsties.Shared.Excel.Service.Excel;
-using Carsties.Shared.Data.Entities;
+using Carsties.Shared.ExceptionHandler.Exceptions;
 
 namespace AuctionService.Services.Auction;
 
@@ -51,7 +52,7 @@ public class AuctionServiceimpl : IAuctionService
 
     public async Task<byte[]> ExportAuctionsToExcelAsync()
     {
-        var auctions = await _auctionRepository.GetAuctionsWithItemsAsync();
+        var auctions = await _auctionRepository.GetAuctionsWithItemsAsync(null);
         var exportDtos = _mapper.Map<IEnumerable<AuctionExportDTO>>(auctions);
         return _excelService.ExportToExcel(exportDtos, "Auctions");
     }
@@ -71,11 +72,12 @@ public class AuctionServiceimpl : IAuctionService
         return _mapper.Map<AuctionDTO>(auction);
     }
 
-    public async Task<IEnumerable<AuctionDTO>> GetAuctionsAsync()
+    public async Task<IEnumerable<AuctionDTO>> GetAuctionsAsync(AuctionRequestDTO requestDTO)
     {
-        var auctions = await _auctionRepository.GetAuctionsWithItemsAsync();
+        var auctions = await _auctionRepository.GetAuctionsWithItemsAsync(requestDTO);
         return _mapper.Map<IEnumerable<AuctionDTO>>(auctions);
     }
+
 
     public async Task<bool> ImportAuctionsFromExcelAsync(Stream stream)
     {

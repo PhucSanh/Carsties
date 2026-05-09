@@ -2,6 +2,8 @@
 using AuctionService.Services.Auction;
 using AutoMapper;
 using Carsties.Shared.Data.DTOs.Auction;
+using Carsties.Shared.Data.DTOs.Request;
+using Carsties.Shared.ExceptionHandler.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuctionService.Controllers
@@ -19,9 +21,9 @@ namespace AuctionService.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AuctionDTO>>> GetAuctions()
+        public async Task<ActionResult<IEnumerable<AuctionDTO>>> GetAuctions([FromQuery] AuctionRequestDTO requestDTO)
         {
-            var auctions = await _auctionService.GetAuctionsAsync();
+            var auctions = await _auctionService.GetAuctionsAsync(requestDTO);
             return Ok(auctions);
         }
 

@@ -1,19 +1,19 @@
 using System;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
 
-namespace AuctionService.Exceptions;
+namespace Carsties.Shared.ExceptionHandler.Exceptions;
 
 public class ErrorResponse
 {
-    public string Message { get; set; }
+    public string? Message { get; set; }
     public int StatusCode { get; set; }
 }
 
 public class GlobalExceptionHandler : IExceptionHandler
 {
-    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, System.Exception exception, CancellationToken cancellationToken)
+    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
-
         var statusCode = exception switch
         {
             NotFoundException => StatusCodes.Status404NotFound,

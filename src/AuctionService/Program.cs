@@ -1,16 +1,17 @@
 using AuctionService.Data;
 using AuctionService.Data.SeedData.Auction;
-using AuctionService.Exceptions;
 using AuctionService.Repositories;
 using AuctionService.Repositories.Generic;
 using AuctionService.Services.Auction;
 using Carsties.Shared.Excel.Service.Excel;
+using Carsties.Shared.ExceptionHandler.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddControllers();
