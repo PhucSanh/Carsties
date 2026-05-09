@@ -19,12 +19,23 @@ public class AuctionSvcHttpClient : IAuctionSvc
 
     public async Task<List<Item>> GetItemForSearchAsync()
     {
-        var lastUpdate = await _searchRepository.GetLastUpdateTimeAsync();
-        Console.WriteLine($"Last update time: {lastUpdate}");
-        Console.WriteLine($"{_configuration["AuctionServiceUrl"]}/api/auctions?dateTime={lastUpdate}");
-        return await _httpClient
-        .GetFromJsonAsync<List<Item>>(
-            $"{_configuration["AuctionServiceUrl"]}/api/auctions?dateTime={lastUpdate}");
+        try
+        {
+            var lastUpdate = await _searchRepository.GetLastUpdateTimeAsync();
+            Console.WriteLine($"Last update time: {lastUpdate}");
+            Console.WriteLine($"{_configuration["AuctionServiceUrl"]}/api/auctions?dateTime={lastUpdate}");
+            return await _httpClient
+            .GetFromJsonAsync<List<Item>>(
+                $"{_configuration["AuctionServiceUrl"]}/api/auctions?dateTime={lastUpdate}");
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error fetching items from Auction Service: {ex.Message}");
+            return new List<Item>();
+        }
+
+
     }
 
 }

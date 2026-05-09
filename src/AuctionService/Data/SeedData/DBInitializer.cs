@@ -31,6 +31,7 @@ public class DBInitializer
         }
         catch (Exception ex)
         {
+            Console.WriteLine($"---> Lỗi cụ thể: {ex.Message}");
             Console.WriteLine($"An error occurred seeding the DB: {ex.Message}");
         }
 

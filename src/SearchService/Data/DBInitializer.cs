@@ -22,15 +22,23 @@ public class DBInitializer
             .CreateAsync();
 
         var count = await DB.CountAsync<Item>();
-
-        using var scope = web.Services.CreateScope();
-        var httpClient = scope.ServiceProvider.GetRequiredService<IAuctionSvc>();
-        var items = await httpClient.GetItemForSearchAsync();
-        Console.WriteLine($"Number of items in DB: {count}");
-        if (items.Count > 0)
+        try
         {
-            await DB.SaveAsync(items);
+            using var scope = web.Services.CreateScope();
+
+            var httpClient = scope.ServiceProvider.GetRequiredService<IAuctionSvc>();
+            var items = await httpClient.GetItemForSearchAsync();
+            if (items.Count > 0)
+            {
+                await DB.SaveAsync(items);
+            }
+
         }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error counting items: {ex.Message}");
+        }
+
 
 
     }
