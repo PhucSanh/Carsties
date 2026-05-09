@@ -2,7 +2,7 @@ using System;
 using Carsties.Shared.Excel.Attributes.Excel;
 
 
-namespace AuctionService.DTOs.Auction;
+namespace Carsties.Shared.Data.DTOs.Auction;
 
 public class AuctionExportDTO
 {

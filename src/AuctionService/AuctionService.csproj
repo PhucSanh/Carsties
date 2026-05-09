@@ -16,17 +16,12 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="Data\Configurations\" />
-    <Folder Include="Data\SeedData\Auction\" />
-    <Folder Include="Entities\" />
-    <Folder Include="Repositories\" />
-    <Folder Include="Repositories\Auction\" />
-    <Folder Include="Repositories\Generic\" />
 
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Contracts\Carsties.Shared.Excel\Carsties.Shared.Excel.csproj" />
+    <ProjectReference Include="..\Contracts\Carsties.Shared.Data\Carsties.Shared.Data.csproj" />
   </ItemGroup>
 
 </Project>

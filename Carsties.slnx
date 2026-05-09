@@ -1,8 +1,10 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/AuctionService/AuctionService.csproj" />
+    <Project Path="src/SearchService/SearchService.csproj" />
   </Folder>
   <Folder Name="/src/Contracts/">
+    <Project Path="src/Contracts/Carsties.Shared.Data/Carsties.Shared.Data.csproj" />
     <Project Path="src/Contracts/Carsties.Shared.Excel/Carsties.Shared.Excel.csproj" />
   </Folder>
 </Solution>

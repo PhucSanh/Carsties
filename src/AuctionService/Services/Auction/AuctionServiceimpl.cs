@@ -1,10 +1,10 @@
 using System;
-using AuctionService.DTO;
-using AuctionService.DTOs.Auction;
-using AuctionService.Repositories;
+
 
 using AutoMapper;
+using Carsties.Shared.Data.DTOs.Auction;
 using Carsties.Shared.Excel.Service.Excel;
+using Carsties.Shared.Data.Entities;
 
 namespace AuctionService.Services.Auction;
 
@@ -22,7 +22,7 @@ public class AuctionServiceimpl : IAuctionService
 
     public async Task<AuctionDTO> CreateAuctionAsync(AuctionCreateDTO auctionDto)
     {
-        var auction = _mapper.Map<Entities.Auction>(auctionDto);
+        var auction = _mapper.Map<Carsties.Shared.Data.Entities.Auction>(auctionDto);
         auction.Id = Guid.NewGuid();
         auction.Seller = "John Doe";
         _auctionRepository.Add(auction);
@@ -92,7 +92,7 @@ public class AuctionServiceimpl : IAuctionService
         }
 
         var importDtos = importResult.Data;
-        var auctions = _mapper.Map<IEnumerable<Entities.Auction>>(importDtos);
+        var auctions = _mapper.Map<IEnumerable<Carsties.Shared.Data.Entities.Auction>>(importDtos);
         foreach (var auction in auctions)
         {
             auction.Id = Guid.NewGuid();

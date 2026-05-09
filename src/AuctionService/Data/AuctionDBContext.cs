@@ -1,5 +1,6 @@
 using System;
 using AuctionService.Entities;
+using Carsties.Shared.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace AuctionService.Data;

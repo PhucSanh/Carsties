@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace AuctionService.DTOs.Auction;
+namespace Carsties.Shared.Data.DTOs.Auction;
 
 public class AuctionCreateDTO
 {

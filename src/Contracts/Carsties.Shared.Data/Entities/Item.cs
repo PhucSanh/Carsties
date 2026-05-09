@@ -1,6 +1,6 @@
 using System;
 
-namespace AuctionService.Entities;
+namespace Carsties.Shared.Data.Entities;
 
 public class Item
 {

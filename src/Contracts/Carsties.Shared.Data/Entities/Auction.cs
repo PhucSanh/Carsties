@@ -1,6 +1,6 @@
 using AuctionService.Entities.Enums;
 
-namespace AuctionService.Entities;
+namespace Carsties.Shared.Data.Entities;
 
 public class Auction
 {

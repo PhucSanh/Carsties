@@ -1,6 +1,6 @@
 using System;
 
-namespace AuctionService.DTO;
+namespace Carsties.Shared.Data.DTOs.Auction;
 
 public class AuctionDTO
 {
