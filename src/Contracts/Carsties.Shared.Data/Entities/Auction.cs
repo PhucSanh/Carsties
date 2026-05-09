@@ -6,9 +6,9 @@ public class Auction
 {
     public Guid Id { get; set; }
     public int ReservePrice { get; set; }
-    public string Seller { get; set; }
+    public string? Seller { get; set; }
 
-    public string Winner { get; set; }
+    public string? Winner { get; set; }
     public int? SoldAmount { get; set; }
     public int? CurrentHighestBid { get; set; }
 
@@ -19,6 +19,6 @@ public class Auction
 
     public Status Status { get; set; }
 
-    public Item Item { get; set; }
+    public Item? Item { get; set; }
 
 }

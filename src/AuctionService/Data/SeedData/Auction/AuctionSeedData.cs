@@ -3,6 +3,7 @@ using AuctionService.Data;
 using AuctionService.Data.SeedData.Auction;
 using AuctionService.Entities;
 using AuctionService.Entities.Enums;
+using Carsties.Shared.Data.Entities;
 
 
 public class AuctionSeedData : IAuctionSeedData

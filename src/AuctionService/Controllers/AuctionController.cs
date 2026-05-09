@@ -1,7 +1,7 @@
-using AuctionService.DTO;
-using AuctionService.DTOs.Auction;
+
 using AuctionService.Services.Auction;
 using AutoMapper;
+using Carsties.Shared.Data.DTOs.Auction;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuctionService.Controllers

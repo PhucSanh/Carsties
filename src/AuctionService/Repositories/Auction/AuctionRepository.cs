@@ -2,6 +2,7 @@ using System;
 using AuctionService.Data;
 using AuctionService.Entities;
 using AuctionService.Repositories.Generic;
+using Carsties.Shared.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace AuctionService.Repositories;
