@@ -20,7 +20,8 @@ public class MappingProfiler : Profile
             Model = src.Model,
             Year = src.Year,
             Color = src.Color,
-            Mileage = src.Mileage
+            Mileage = src.Mileage,
+            ImageUrl = src.ImageUrl
         }));
 
         CreateMap<AuctionUpdateDTO, Item>()
@@ -34,6 +35,8 @@ public class MappingProfiler : Profile
             .ForMember(dest => dest.Year, opt => opt.MapFrom(src => src.Item.Year))
             .ForMember(dest => dest.Color, opt => opt.MapFrom(src => src.Item.Color))
             .ForMember(dest => dest.Mileage, opt => opt.MapFrom(src => src.Item.Mileage));
+
+
 
 
     }

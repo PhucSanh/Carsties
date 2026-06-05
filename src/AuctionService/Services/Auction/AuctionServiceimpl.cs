@@ -6,6 +6,7 @@ using Carsties.Shared.Data.DTOs.Auction;
 using Carsties.Shared.Data.DTOs.Request;
 using Carsties.Shared.Excel.Service.Excel;
 using Carsties.Shared.ExceptionHandler.Exceptions;
+using MassTransit;
 
 namespace AuctionService.Services.Auction;
 
@@ -14,11 +15,15 @@ public class AuctionServiceimpl : IAuctionService
     private readonly IAuctionRepository _auctionRepository;
     private readonly IExcelService _excelService;
     private readonly IMapper _mapper;
-    public AuctionServiceimpl(IAuctionRepository auctionRepository, IMapper mapper, IExcelService excelService)
+    private readonly IPublishEndpoint _publishEndpoint;
+    public AuctionServiceimpl(
+        IAuctionRepository auctionRepository, IMapper mapper,
+        IExcelService excelService, IPublishEndpoint publishEndpoint)
     {
         _auctionRepository = auctionRepository;
         _mapper = mapper;
         _excelService = excelService;
+        _publishEndpoint = publishEndpoint;
     }
 
     public async Task<AuctionDTO> CreateAuctionAsync(AuctionCreateDTO auctionDto)
@@ -32,7 +37,9 @@ public class AuctionServiceimpl : IAuctionService
         {
             throw new BadRequestException("Failed to create auction.");
         }
-        return _mapper.Map<AuctionDTO>(auction);
+        var actionDTO = _mapper.Map<AuctionDTO>(auction);
+        await _publishEndpoint.Publish(actionDTO);
+        return actionDTO;
     }
 
     public async Task DeleteAuctionAsync(Guid id)

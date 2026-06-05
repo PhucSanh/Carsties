@@ -2,8 +2,10 @@
 
 
 using Carsties.Shared.ExceptionHandler.Exceptions;
+using MassTransit;
 using Polly;
 using Polly.Extensions.Http;
+using SearchService.Consumer;
 using SearchService.Data;
 using SearchService.Repositories;
 using SearchService.Services.AuctionSvc;
@@ -20,9 +22,17 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddScoped<ISearchService, SearchServiceImpl>();
 builder.Services.AddScoped<ISearchRepository, SearchRepository>();
-
-builder.Services.AddHttpClient<IAuctionSvc, AuctionSvcHttpClient>().AddPolicyHandler(GetRetryPolicy());
-
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+//builder.Services.AddHttpClient<IAuctionSvc, AuctionSvcHttpClient>().AddPolicyHandler(GetRetryPolicy());
+builder.Services.AddMassTransit(x =>
+{
+    x.AddConsumersFromNamespaceContaining<AuctionCreatedConsumer>();
+    x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("search", false));
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.ConfigureEndpoints(context);
+    });
+});
 var app = builder.Build();
 
 
@@ -55,9 +65,9 @@ app.Lifetime.ApplicationStarted.Register(async () =>
 app.Run();
 
 
-static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
- => HttpPolicyExtensions
-    .HandleTransientHttpError()
-    .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
-    .WaitAndRetryForeverAsync(x => TimeSpan.FromSeconds(3));
+// static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+//  => HttpPolicyExtensions
+//     .HandleTransientHttpError()
+//     .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
+//     .WaitAndRetryForeverAsync(x => TimeSpan.FromSeconds(3));
 

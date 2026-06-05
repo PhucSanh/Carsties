@@ -5,6 +5,7 @@ using AuctionService.Repositories.Generic;
 using AuctionService.Services.Auction;
 using Carsties.Shared.Excel.Service.Excel;
 using Carsties.Shared.ExceptionHandler.Exceptions;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -19,6 +20,20 @@ builder.Services.AddDbContext<AuctionDBContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddMassTransit(x =>
+{
+    x.AddEntityFrameworkOutbox<AuctionDBContext>(o =>
+    {
+        o.QueryDelay = TimeSpan.FromSeconds(10);
+        o.UsePostgres();
+        o.UseBusOutbox();
+    });
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.ConfigureEndpoints(context);
+    });
+});
+
 builder.Services.AddScoped<IAuctionSeedData, AuctionSeedData>();
 // Repositories
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
