@@ -25,8 +25,10 @@ public class MappingProfiler : Profile
         }));
 
         CreateMap<AuctionUpdateDTO, Item>()
+               .ForMember(dest => dest.Id, opt => opt.Ignore())
              .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         CreateMap<AuctionUpdateDTO, Auction>()
+                  .ForMember(dest => dest.Id, opt => opt.Ignore())
                  .ForMember(dest => dest.Item, opt => opt.MapFrom(src => src));
 
         CreateMap<Auction, AuctionExportDTO>()

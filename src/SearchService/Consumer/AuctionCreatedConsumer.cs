@@ -19,7 +19,10 @@ public class AuctionCreatedConsumer : IConsumer<AuctionDTO>
     {
         Console.WriteLine("Received Auction Created Event: " + context.Message.Make + " " + context.Message.Model);
         var item = _mapper.Map<Item>(context.Message);
-
+        if (item.Model == "Foo")
+        {
+            throw new ArgumentException("Simulated exception for testing retry mechanism.");
+        }
         await DB.SaveAsync(item);
 
     }

@@ -32,13 +32,14 @@ public class AuctionServiceimpl : IAuctionService
         auction.Id = Guid.NewGuid();
         auction.Seller = "John Doe";
         _auctionRepository.Add(auction);
+        var actionDTO = _mapper.Map<AuctionDTO>(auction);
+        await _publishEndpoint.Publish(actionDTO);
         var result = await _auctionRepository.SaveChangesAsync();
         if (!result)
         {
             throw new BadRequestException("Failed to create auction.");
         }
-        var actionDTO = _mapper.Map<AuctionDTO>(auction);
-        await _publishEndpoint.Publish(actionDTO);
+
         return actionDTO;
     }
 
@@ -50,6 +51,7 @@ public class AuctionServiceimpl : IAuctionService
             throw new NotFoundException($"Auction with id {id} not found.");
         }
         _auctionRepository.Delete(auction);
+        await _publishEndpoint.Publish(new AuctionDeleteDTO { Id = id });
         var result = await _auctionRepository.SaveChangesAsync();
         if (!result)
         {
@@ -121,6 +123,8 @@ public class AuctionServiceimpl : IAuctionService
         }
         _mapper.Map(auctionDto, auction);
         _auctionRepository.Update(auction);
+        auctionDto.Id = id;
+        await _publishEndpoint.Publish(auctionDto);
         var result = await _auctionRepository.SaveChangesAsync();
         if (!result)
         {

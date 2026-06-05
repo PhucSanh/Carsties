@@ -4,5 +4,5 @@ namespace Carsties.Shared.Data.DTOs.Auction;
 
 public class AuctionDeleteDTO
 {
-    public string Id { get; set; }
+    public Guid Id { get; set; }
 }
