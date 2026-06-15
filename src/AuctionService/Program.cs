@@ -7,6 +7,7 @@ using AuctionService.Services.Auction;
 using Carsties.Shared.Excel.Service.Excel;
 using Carsties.Shared.ExceptionHandler.Exceptions;
 using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -45,10 +46,22 @@ builder.Services.AddScoped<IAuctionRepository, AuctionRepository>();
 //Services
 builder.Services.AddScoped<IAuctionService, AuctionServiceimpl>();
 builder.Services.AddScoped<IExcelService, ExcelService>();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = builder.Configuration["IdentityServerUrl"];
+        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters.ValidateAudience = false;
+        options.TokenValidationParameters.NameClaimType = "name";
+
+    });
+
 var app = builder.Build();
 app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

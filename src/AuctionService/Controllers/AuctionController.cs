@@ -4,6 +4,7 @@ using AutoMapper;
 using Carsties.Shared.Data.DTOs.Auction;
 using Carsties.Shared.Data.DTOs.Request;
 using Carsties.Shared.ExceptionHandler.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuctionService.Controllers
@@ -34,24 +35,29 @@ namespace AuctionService.Controllers
             return Ok(auction);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<AuctionDTO>> CreateAuction(AuctionCreateDTO auctionDto)
         {
-            var auction = await _auctionService.CreateAuctionAsync(auctionDto);
+            var userName = User.Identity?.Name;
+            var auction = await _auctionService.CreateAuctionAsync(auctionDto, userName);
             return CreatedAtAction(nameof(GetAuction), new { id = auction.Id }, auction);
         }
-
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateAuction(Guid id, AuctionUpdateDTO auctionDto)
         {
-            await _auctionService.UpdateAuctionAsync(id, auctionDto);
+            var userName = User.Identity?.Name;
+            await _auctionService.UpdateAuctionAsync(id, auctionDto, userName);
             return NoContent();
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAuction(Guid id)
         {
-            await _auctionService.DeleteAuctionAsync(id);
+            var userName = User.Identity?.Name;
+            await _auctionService.DeleteAuctionAsync(id, userName);
             return NoContent();
         }
 

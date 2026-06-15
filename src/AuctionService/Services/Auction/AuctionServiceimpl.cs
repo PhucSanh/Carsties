@@ -26,11 +26,11 @@ public class AuctionServiceimpl : IAuctionService
         _publishEndpoint = publishEndpoint;
     }
 
-    public async Task<AuctionDTO> CreateAuctionAsync(AuctionCreateDTO auctionDto)
+    public async Task<AuctionDTO> CreateAuctionAsync(AuctionCreateDTO auctionDto, string seller)
     {
         var auction = _mapper.Map<Carsties.Shared.Data.Entities.Auction>(auctionDto);
         auction.Id = Guid.NewGuid();
-        auction.Seller = "John Doe";
+        auction.Seller = seller;
         _auctionRepository.Add(auction);
         var actionDTO = _mapper.Map<AuctionDTO>(auction);
         await _publishEndpoint.Publish(actionDTO);
@@ -43,12 +43,16 @@ public class AuctionServiceimpl : IAuctionService
         return actionDTO;
     }
 
-    public async Task DeleteAuctionAsync(Guid id)
+    public async Task DeleteAuctionAsync(Guid id , string deleter)
     {
         var auction = await _auctionRepository.GetByIdAsync(id);
         if (auction == null)
         {
             throw new NotFoundException($"Auction with id {id} not found.");
+        }
+        if(deleter != auction.Seller)
+        {
+            throw new ForbiddenException("Only the seller can delete the auction.");
         }
         _auctionRepository.Delete(auction);
         await _publishEndpoint.Publish(new AuctionDeleteDTO { Id = id });
@@ -114,12 +118,17 @@ public class AuctionServiceimpl : IAuctionService
         return result;
     }
 
-    public async Task UpdateAuctionAsync(Guid id, AuctionUpdateDTO auctionDto)
+    public async Task UpdateAuctionAsync(Guid id, AuctionUpdateDTO auctionDto, string updater)
     {
+
         var auction = await _auctionRepository.GetAuctionWithItemsAsync(id);
         if (auction == null)
         {
             throw new NotFoundException($"Auction with id {id} not found.");
+        }
+        if(updater != auction.Seller)
+        {
+            throw new ForbiddenException("Only the seller can update the auction.");
         }
         _mapper.Map(auctionDto, auction);
         _auctionRepository.Update(auction);
