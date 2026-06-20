@@ -1,6 +1,6 @@
 [
   {
-    "feature_name": "Quản lý đấu giá cơ bản",
+    "business_name": "Quản lý đấu giá cơ bản",
     "apis": [
       {
         "controller": "AuctionController",
@@ -25,7 +25,7 @@
     ]
   },
   {
-    "feature_name": "Xuất nhập dữ liệu Excel",
+    "business_name": "Xuất nhập dữ liệu Excel",
     "apis": [
       {
         "controller": "AuctionController",
@@ -42,7 +42,7 @@
     ]
   },
   {
-    "feature_name": "Tìm kiếm nâng cao",
+    "business_name": "Tìm kiếm nâng cao",
     "apis": [
       {
         "controller": "SearchController",
