@@ -32,5 +32,18 @@ public static class Config
                 AllowedGrantTypes = { GrantType.ResourceOwnerPassword },
                 
             },
+            new Client
+            {
+                ClientId = "NextApp",
+                ClientName = "nextApp",
+                ClientSecrets = { new Secret("NotASecret".Sha256()) },
+                AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
+                RequirePkce = false,
+                RedirectUris={"https://localhost:3000/api/auth/callback/id-server" },
+                AllowOfflineAccess = true,
+                AllowedScopes = { "openid", "profile", "auctionApp" },
+                AccessTokenLifetime = 3600*24*30,
+
+            }
         };
 }
