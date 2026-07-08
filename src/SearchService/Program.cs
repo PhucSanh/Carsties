@@ -70,27 +70,22 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Lifetime.ApplicationStarted.Register(async () =>
+try
 {
-    try
-    {
-        await DBInitializer.InitializeAsync(app);
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Error initializing database: {ex.Message}");
-    }
+    await DBInitializer.InitializeAsync(app);
+    Console.WriteLine("-----> MongoDB Initialized Successfully!");
 
-});
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Error starting the application: {ex.Message}");
+   
+}
 
 
 
 app.Run();
 
 
-// static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
-//  => HttpPolicyExtensions
-//     .HandleTransientHttpError()
-//     .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
-//     .WaitAndRetryForeverAsync(x => TimeSpan.FromSeconds(3));
+
 

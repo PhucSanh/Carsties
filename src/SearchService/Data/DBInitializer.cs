@@ -10,20 +10,21 @@ public class DBInitializer
 {
     public static async Task InitializeAsync(WebApplication web)
     {
-        await DB.InitAsync("SearchService",
-                MongoClientSettings.
-                FromConnectionString(web.Configuration.GetConnectionString("DefaultConnection")));
-
-        await DB.Index<Item>()
-            .Key(i => i.Make, KeyType.Text)
-            .Key(i => i.Model, KeyType.Text)
-            .Key(i => i.Color, KeyType.Text)
-            .Key(i => i.Seller, KeyType.Text)
-            .CreateAsync();
-
-        var count = await DB.CountAsync<Item>();
+       
         try
         {
+            await DB.InitAsync("SearchService",
+               MongoClientSettings.
+               FromConnectionString(web.Configuration.GetConnectionString("DefaultConnection")));
+
+            await DB.Index<Item>()
+                .Key(i => i.Make, KeyType.Text)
+                .Key(i => i.Model, KeyType.Text)
+                .Key(i => i.Color, KeyType.Text)
+                .Key(i => i.Seller, KeyType.Text)
+                .CreateAsync();
+
+            var count = await DB.CountAsync<Item>();
             using var scope = web.Services.CreateScope();
 
             var httpClient = scope.ServiceProvider.GetRequiredService<IAuctionSvc>();
