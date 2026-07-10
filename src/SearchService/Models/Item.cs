@@ -3,6 +3,7 @@ using MongoDB.Entities;
 
 namespace SearchService.Models;
 
+[Collection("Item")]
 public class Item : Entity
 {
     public int ReservePrice { get; set; }
