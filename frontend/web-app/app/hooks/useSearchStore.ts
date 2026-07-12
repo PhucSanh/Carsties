@@ -5,6 +5,8 @@ type State = {
     pageSize: number;
     pageCount: number;
     searchQuery: string;
+    sortBy: string;
+    sortDirection: 'asc' | 'desc';
 }
 type Actions = {
     setParams: (params: Partial<State>) => void;
@@ -14,7 +16,9 @@ const initialState: State = {
     pageNumber: 1,
     pageSize: 8,
     pageCount: 1,
-    searchQuery: ''
+    searchQuery: '',
+    sortBy: 'Make',
+    sortDirection: 'asc'
 }
 
 export const useSearchStore = create<State & Actions>((set) => ({

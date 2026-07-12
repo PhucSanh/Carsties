@@ -9,7 +9,9 @@ type Props = {
 
 }
 export default function AppPagination({ currentPage, pageCount, setPageNumber }: Props) {
-
+    if (!currentPage || !pageCount || !setPageNumber) {
+        return null;
+    }
     return (
 
         <Pagination
